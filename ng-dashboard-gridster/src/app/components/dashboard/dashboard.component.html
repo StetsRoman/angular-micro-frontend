@@ -1,0 +1,116 @@
+<div class="toolbar">
+  <mat-card class="toolbar-item">
+    <div>
+      <button
+        class="add-new-item"
+        color="primary"
+        mat-fab
+        (click)="layoutService.addItem()"
+      >
+        <mat-icon>add</mat-icon>
+      </button>
+      <mat-form-field
+        class="toolbar-item input-field-small"
+        appearance="outline"
+      >
+        <mat-label>Min Col</mat-label>
+        <input
+          type="number"
+          matInput
+          [(ngModel)]="layoutService.newItem.minCol"
+        />
+      </mat-form-field>
+
+      <mat-form-field
+        class="toolbar-item input-field-small"
+        appearance="outline"
+      >
+        <mat-label>Max Col</mat-label>
+        <input
+          type="number"
+          matInput
+          [(ngModel)]="layoutService.newItem.maxCol"
+        />
+      </mat-form-field>
+
+      <mat-form-field
+        class="toolbar-item input-field-small"
+        appearance="outline"
+      >
+        <mat-label>Min Row</mat-label>
+        <input
+          type="number"
+          matInput
+          [(ngModel)]="layoutService.newItem.minRow"
+        />
+      </mat-form-field>
+
+      <mat-form-field
+        class="toolbar-item input-field-small"
+        appearance="outline"
+      >
+        <mat-label>Max Row</mat-label>
+        <input
+          type="number"
+          matInput
+          [(ngModel)]="layoutService.newItem.maxRow"
+        />
+      </mat-form-field>
+    </div>
+  </mat-card>
+
+  <mat-form-field class="toolbar-item input-field" appearance="outline">
+    <mat-label>Grid Col Number</mat-label>
+    <input
+      type="number"
+      matInput
+      [value]="layoutService.options.minCols"
+      (keyup)="layoutService.changeGridMinCols($event.target.value)"
+    />
+  </mat-form-field>
+
+  <mat-form-field class="toolbar-item input-field" appearance="outline">
+    <mat-label>Grid Row Number</mat-label>
+    <input
+      type="number"
+      matInput
+      [value]="layoutService.options.minRows"
+      (keyup)="layoutService.changeGridMinRows($event.target.value)"
+    />
+  </mat-form-field>
+</div>
+
+<gridster [options]="options">
+  <gridster-item
+    *ngFor="let item of layout"
+    [item]="item"
+    (dragover)="layoutService.setDropId(item.id)"
+  >
+    <div class="item-container">
+      <div class="item-title item-buttons">
+        <button disableRipple mat-icon-button color="primary" class="drag-handler">
+          <mat-icon>drag_indicator</mat-icon>
+        </button>
+        <div class="mat-subheading-2">Chart title</div>
+        <button
+          mat-icon-button
+          color="primary"
+          class="remove-button"
+          (click)="layoutService.deleteItem(item.id)"
+          (mousedown)="$event.stopPropagation()"
+          (touchstart)="$event.stopPropagation()"
+        >
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+      <div class="item-content gridster-item-content">
+        <highcharts-chart 
+          [Highcharts]="highcharts"
+          [options]="chartOptions"
+          (resized)="resizeCharts(highcharts.charts)"
+        >
+        </highcharts-chart>
+      </div>
+    </div>
+  </gridster-item>
+</gridster>
